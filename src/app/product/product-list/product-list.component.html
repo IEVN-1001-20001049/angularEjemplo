@@ -11,37 +11,45 @@
                 Filtrar por:
             </div>
             <div class="col-md-2">
-                <input type="text" name="filtrer" class="from-control">
+                <input [(ngModel)]="listFilter" type="text" name="filtrer" class="from-control">
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <h3>Filtro: </h3>
+                    <h3>Filtro:{{listFilter | uppercase}}</h3>
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table" *ngIf="productos.length">
+                <table class="table" *ngIf="productos.length" >
                     <thead>
                         <tr>
                             <th>
-                                <button type="button" class="btn btn-primary">Imagen</button>
+                                <button (click)="showImage()" type="button" 
+                                class="btn btn-primary">{{muestraImg?'Ocultar ':'Muestra '}}imagen</button>
                             </th>
                             <th>Modelo</th>
-                            <th>Descrpcion</th>
+                            <th>Descripcion</th>
                             <th>Año</th>
                             <th>Precio</th>
                             <th>Marca</th>
                             <th>Color</th>
+                            <th>Imagen</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{{productos[0].productoId}}</td>
-                            <td>{{productos[0].Modelo}}</td>
-                            <td>{{productos[0].Descripcion}}</td>
-                            <td>{{productos[0].year}}</td>
-                            <td>{{productos[0].Precio}}</td>
-                            <td>{{productos[0].Marca}}</td>
-                            <td>{{productos[0].Color}}</td>
+                        <tr *ngFor="let producto of productos | productoFilter:listFilter">
+                            <td>{{producto.productoId}}</td>
+                            <td>{{producto.Modelo | uppercase}}</td>
+                            <td>{{producto.Descripcion}}</td>
+                            <td>{{producto.year}}</td>
+                            <td>{{producto.Precio | currency}}</td>
+                            <td>{{producto.Marca}}</td>
+                            <td>{{producto.Color}}</td>
+                            <td>
+                                <img *ngIf="muestraImg" [src]="producto.imagenUrl"
+                                [title]="producto.Modelo"
+                                [style.width.px]="imageWidth"
+                                [style.margin.px]="imageMargin">
+                            </td>
                         </tr>
                     </tbody>
                 </table>
